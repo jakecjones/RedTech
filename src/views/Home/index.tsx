@@ -7,12 +7,8 @@ import InputBase from "@mui/material/InputBase";
 import Divider from "@mui/material/Divider";
 import IconButton from "@mui/material/IconButton";
 import SearchIcon from "@mui/icons-material/Search";
-import Table from "@mui/material/Table";
-import TableBody from "@mui/material/TableBody";
-import TableCell from "@mui/material/TableCell";
-import TableContainer from "@mui/material/TableContainer";
-import TableHead from "@mui/material/TableHead";
-import TableRow from "@mui/material/TableRow";
+import ListView from "../../components/ListView";
+
 import orderService from "../../services/orders";
 
 interface IState {
@@ -87,37 +83,8 @@ class Home extends Component<{}, IState> {
                   Create Order +
                 </Button>
               </div>
-              <TableContainer component={Paper} sx={{ mt: 2 }}>
-                <Table sx={{ minWidth: 650 }} aria-label="simple table">
-                  <TableHead>
-                    <TableRow>
-                      <TableCell>Order ID</TableCell>
-                      <TableCell>Creation Date</TableCell>
-                      <TableCell>Created By</TableCell>
-                      <TableCell>Order Type</TableCell>
-                      <TableCell>Customer</TableCell>
-                    </TableRow>
-                  </TableHead>
 
-                  <TableBody>
-                    {this.state.orders.map((row) => (
-                      <TableRow
-                        key={row.customerName}
-                        sx={{
-                          "&:last-child td, &:last-child th": { border: 0 },
-                        }}
-                      >
-                        <TableCell>{row.orderId}</TableCell>
-                        <TableCell>{row.createdDate}</TableCell>
-                        <TableCell>{row.createdByUserName}</TableCell>
-                        <TableCell>{row.orderType}</TableCell>
-                        <TableCell>{row.customerName}</TableCell>
-                      </TableRow>
-                    ))}
-                  </TableBody>
-                </Table>
-              </TableContainer>
-              <div></div>
+              <ListView orders={this.state.orders}/>
             </div>
           ) : (
             ""

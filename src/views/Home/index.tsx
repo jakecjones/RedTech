@@ -37,17 +37,21 @@ class Home extends Component<{}, IState> {
     try {
       const orders = await orderService.get();
 
-      let formattedOrders = orders.map((order: any) => {
-        return {
-          ...order,
-          isChecked: false
-        }
-      })
-      
+      let formattedOrders = this.formatOrders(orders, false);
       this.setState({ orders: formattedOrders });
+
     } catch (error) {
       console.log(error);
     }
+  }
+
+  formatOrders = (orders: any, checkAll: boolean) => {
+    return orders.map((order: any) => {
+      return {
+        ...order,
+        isChecked: checkAll
+      }
+    })
   }
 
   searchOrders = async (e: any) => {
@@ -61,8 +65,19 @@ class Home extends Component<{}, IState> {
         const orders = await orderService.get();
         this.setState({ orders })
       }
+  }
 
-      
+  handleSelectOrders = (checkAll: boolean) => {
+      const formattedOrders = this.formatOrders(this.state.orders, checkAll);
+      this.setState({ orders: formattedOrders });
+  }
+  handleSelectOrder = (orderId: any, e: any) => {
+    let orders = this.state.orders;
+    const orderIndex = this.state.orders?.findIndex(order => orderId === order.orderId);
+    if (orders && orders.length && orderIndex !== undefined ) {
+      orders[orderIndex].isChecked = e.target.checked;
+      this.setState({ orders })
+    }
   }
 
   render() {
@@ -105,7 +120,7 @@ class Home extends Component<{}, IState> {
             this.state.orders &&
             this.state.orders.length 
             ? (
-              <ListView orders={this.state.orders} />
+              <ListView selectOrder={this.handleSelectOrder} selectAllOrders={this.handleSelectOrders} orders={this.state.orders} />
             ) : (
               <NoResults />
             )}

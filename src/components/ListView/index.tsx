@@ -8,8 +8,11 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Checkbox from "@mui/material/Checkbox";
 import Paper from "@mui/material/Paper";
+import IndeterminateCheckBoxIcon from '@mui/icons-material/IndeterminateCheckBox';
 
 interface IProps {
+  selectAllOrders?: any;
+  selectOrder?: any;
   orders?: Array<{
     customerName?: string;
     createdByUserName?: string;
@@ -20,7 +23,19 @@ interface IProps {
   }>;
 }
 
+let allChecked = false;
+let checkboxStyles = {color: "#000", '&.Mui-checked': {color: "#000"}};
+
 class ListView extends Component<IProps, {}> {
+
+  checkAll = (e: any) => {
+    this.props.selectAllOrders(e.target.checked)
+  }
+
+  selectOrder = (orderId: number, e: any) => {
+    console.log(e, orderId)
+  }
+
   render() {
     return (
       <>
@@ -29,7 +44,9 @@ class ListView extends Component<IProps, {}> {
         <Table sx={{ minWidth: 650 }} aria-label="simple table">
           <TableHead>
             <TableRow>
-              <TableCell />
+              <TableCell>
+                <Checkbox sx={checkboxStyles} checkedIcon={<IndeterminateCheckBoxIcon />} onChange={this.checkAll} color="secondary" defaultChecked={allChecked}/>
+              </TableCell>
               <TableCell>Order ID</TableCell>
               <TableCell>Creation Date</TableCell>
               <TableCell>Created By</TableCell>
@@ -47,7 +64,7 @@ class ListView extends Component<IProps, {}> {
                 }}
               >
                 <TableCell>
-                  <Checkbox color="secondary" defaultChecked={row.isChecked} />
+                  <Checkbox sx={checkboxStyles} onChange={(e) => this.props.selectOrder(row.orderId, e)} color="secondary" checked={row.isChecked || false} />
                 </TableCell>
                 <TableCell>{row.orderId}</TableCell>
                 <TableCell>{row.createdDate}</TableCell>

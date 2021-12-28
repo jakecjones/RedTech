@@ -1,0 +1,25 @@
+
+.headerLogo {
+  height: 36px;
+}
+
+.headerFont {
+  font-size: 24px;
+  font-weight: 500;
+}
+.orders-headers {
+  display: flex;
+  flex-direction: row;
+}
+.no-results {
+  width: 100%;
+  min-height: 300px;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  svg {
+    width: 90%;
+    max-width: 150px;
+  }
+}

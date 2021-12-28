@@ -10,4 +10,12 @@ export default {
       return [];
     }
   },
+  query: async (customerName: string, query: string) => {
+    const orders = await api.http().get(`${PATH}/${customerName}${query}`);
+    if (orders && orders.data) {
+      return orders.data;
+    } else {
+      return [];
+    }
+  }
 };

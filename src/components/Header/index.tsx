@@ -1,6 +1,6 @@
 import React from "react";
-import RedTechIcon from "../../assets/images/RED_TECH_Icon_Full_Color.png";
-import "../../App.css";
+import RedTechIcon from "../../assets/images/logo.svg";
+import "../../App.scss";
 import {colors} from "../../shared/colors";
 import { layout } from "../../shared/layout";
 import AccountCircleIcon from "@material-ui/icons/AccountCircle";

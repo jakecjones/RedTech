@@ -1,5 +1,5 @@
 
-describe('Create order', () => {
+describe('Testing order steps', () => {
     it('Can add new order', () => {
         cy.visit('http://localhost:3000')
 

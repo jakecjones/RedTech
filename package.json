@@ -28,7 +28,7 @@
     "web-vitals": "^0.2.4"
   },
   "scripts": {
-    "cy:run": "cypress run",
+    "test:e2e": "./node_modules/.bin/cypress run",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",

@@ -28,7 +28,7 @@
     "web-vitals": "^0.2.4"
   },
   "scripts": {
-    "test:e2e": "./node_modules/.bin/cypress run",
+    "test:e2e": "start-server-and-test start http://localhost:3000 & ./node_modules/.bin/cypress run",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
@@ -55,6 +55,7 @@
   "devDependencies": {
     "@types/lodash.debounce": "^4.0.6",
     "@types/react-select": "^3.1.1",
-    "cypress": "^9.2.0"
+    "cypress": "^9.2.0",
+    "start-server-and-test": "^1.14.0"
   }
 }

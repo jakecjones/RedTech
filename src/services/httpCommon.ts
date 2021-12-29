@@ -12,8 +12,10 @@ const http = () => {
   });
 
   return instance;
-}
+};
 
-export default {
+const httpCommonService = {
   http
-}
+};
+
+export default httpCommonService;

@@ -120,7 +120,7 @@ class Home extends Component<{}, IState> {
     })
 
     if (deletedOrders?.length) {
-      await orderService.delete(deletedOrders);
+      await orderService.deleteSelected(deletedOrders);
       this.fetchOrders();
     }
   }

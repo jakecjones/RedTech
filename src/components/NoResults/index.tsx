@@ -1,6 +1,5 @@
 import { Component } from "react";
 // import Skeleton from '@mui/material/Skeleton';
-let rows = ['', '', '', ''];
 
 class NoResults extends Component {
     render() {

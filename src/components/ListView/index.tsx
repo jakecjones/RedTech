@@ -24,7 +24,6 @@ interface IProps {
 }
 
 let allChecked = false;
-let checkboxStyles = {color: "#000", '&.Mui-checked': {color: "#000"}};
 
 class ListView extends Component<IProps, {}> {
 
@@ -40,12 +39,12 @@ class ListView extends Component<IProps, {}> {
     return (
       <>
       { this.props && this.props.orders ? (
-      <TableContainer component={Paper} sx={{ mt: 2 }}>
+      <TableContainer component={Paper} sx={{ mt: 2, border: 1, borderColor: "#ccc" }} elevation={0} >
         <Table sx={{ minWidth: 650 }} aria-label="simple table">
           <TableHead>
             <TableRow>
               <TableCell>
-                <Checkbox sx={checkboxStyles} checkedIcon={<IndeterminateCheckBoxIcon />} onChange={this.checkAll} color="secondary" defaultChecked={allChecked}/>
+                <Checkbox checkedIcon={<IndeterminateCheckBoxIcon />} onChange={this.checkAll} defaultChecked={allChecked}/>
               </TableCell>
               <TableCell>Order ID</TableCell>
               <TableCell>Creation Date</TableCell>
@@ -64,7 +63,7 @@ class ListView extends Component<IProps, {}> {
                 }}
               >
                 <TableCell>
-                  <Checkbox sx={checkboxStyles} onChange={(e) => this.props.selectOrder(row.orderId, e)} color="secondary" checked={row.isChecked || false} />
+                  <Checkbox onChange={(e) => this.props.selectOrder(row.orderId, e)} checked={row.isChecked || false} />
                 </TableCell>
                 <TableCell>{row.orderId}</TableCell>
                 <TableCell>{row.createdDate}</TableCell>

@@ -1,19 +1,25 @@
 import { Component } from "react";
 
 import Page from "../../components/Page";
-import Button from "@mui/material/Button";
 import Paper from "@mui/material/Paper";
 import InputBase from "@mui/material/InputBase";
 import Divider from "@mui/material/Divider";
 import IconButton from "@mui/material/IconButton";
 import SearchIcon from "@mui/icons-material/Search";
+import SelectOrderType from "../../components/SelectOrderType";
+import CreateView from "../../components/CreateView";
 import ListView from "../../components/ListView";
 import NoResults from "../../components/NoResults";
+import Select from '@mui/material/Select';
+import ToggleButton from '@mui/material/ToggleButton';
+import FilterListIcon from '@mui/icons-material/FilterList';
 
 import orderService from "../../services/orders";
 
 interface IState {
   searchTerm: string,
+  orderType: string,
+  showFilters: boolean,
   orders?: Array<{
     customerName?: string;
     createdByUserName?: string;
@@ -25,10 +31,13 @@ interface IState {
 }
 
 class Home extends Component<{}, IState> {
+
     constructor(props: any) {
       super(props);
       this.state = {
         searchTerm: '',
+        showFilters: false,
+        orderType: '',
         orders: []
     }
   }
@@ -80,10 +89,19 @@ class Home extends Component<{}, IState> {
     }
   }
 
+  handleSelectOrderType = () => {
+    console.log('TODO')
+  }
+
+  toggleFilters = () => {
+    this.setState({showFilters: !this.state.showFilters});
+  }
+
   render() {
     return (
-      <Page headerTitle={""}>
+      <Page headerTitle={"Orders"}>
         <>
+        
           <div className="orders">
             <div className="orders-headers">
               <Paper
@@ -93,7 +111,10 @@ class Home extends Component<{}, IState> {
                   display: "flex",
                   alignItems: "center",
                   width: 300,
+                  border: 1,
+                  borderColor: "#ccc"
                 }}
+                elevation={0}
               >
                 <InputBase
                   sx={{ ml: 1, flex: 1 }}
@@ -106,21 +127,45 @@ class Home extends Component<{}, IState> {
                 <Divider sx={{ height: 28, m: 0.5 }} orientation="vertical" />
                 <IconButton
                   type="submit"
-                  sx={{ p: "10px", color: "#db3534" }}
+                  sx={{ p: "10px" }}
                   aria-label="search"
                 >
                   <SearchIcon />
                 </IconButton>
               </Paper>
-              <Button sx={{ ml: 2, backgroundColor: "#db3534" }} variant="contained" disableElevation>
-                Create Order +
-              </Button>
+              <ToggleButton
+                sx={{
+                  ml: 1,
+                  border: 1,
+                  borderColor: "#ccc",
+                }}
+                value="check"
+                onClick={this.toggleFilters}
+              >
+                <FilterListIcon sx={{mr: 1}}  />
+                Filters
+              </ToggleButton>
+
+              <CreateView/>
+
+            </div>
+            <div className={`filters ${this.state.showFilters ? 'filters-active' : ''}`}>
+            <Select
+                sx={{ mr: 1, ml: 1, color: "#000", width: 200 }}
+                labelId="demo-simple-select-label"
+                label="Name"
+              />
+              <SelectOrderType selectOrderType={this.handleSelectOrderType}/>
             </div>
             {this.state &&
             this.state.orders &&
             this.state.orders.length 
             ? (
-              <ListView selectOrder={this.handleSelectOrder} selectAllOrders={this.handleSelectOrders} orders={this.state.orders} />
+              <ListView
+                selectOrder={this.handleSelectOrder}
+                selectAllOrders={this.handleSelectOrders}
+                orders={this.state.orders}
+              />
             ) : (
               <NoResults />
             )}

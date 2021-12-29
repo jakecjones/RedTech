@@ -23,3 +23,20 @@
     max-width: 150px;
   }
 }
+
+.filters {
+  padding: 0;
+  max-height: 0px;
+  overflow: hidden;
+  transition: all .3s ease-in-out;
+  background-color: #f9f9f9;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+}
+
+.filters-active {
+  margin: 1em 0;
+  padding: 1em 0;
+  max-height: 200px;
+}

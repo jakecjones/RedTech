@@ -1,3 +1,4 @@
+$break-small: 800px;
 
 .headerLogo {
   height: 36px;
@@ -23,6 +24,22 @@
 .orders-headers {
   display: flex;
   flex-direction: row;
+}
+.orders-table {
+  &__mobile {
+    display: none;
+  }
+  &__desktop {
+    display: block;
+  }
+  @media screen and (max-width: $break-small) {
+    &__desktop {
+      display: none;
+    }
+    &__mobile {
+      display: block;
+    }
+  }
 }
 .no-results {
   width: 100%;

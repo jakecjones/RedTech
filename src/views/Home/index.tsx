@@ -21,8 +21,17 @@ import orderService from "../../services/orders";
 
 interface IState {
   searchTerm: string,
+  customerName: string,
   orderType: string,
   showFilters: boolean,
+  originalOrders?: Array<{
+    customerName?: string;
+    createdByUserName?: string;
+    createdDate?: string;
+    orderId?: number;
+    orderType?: string;
+    isChecked?: boolean;
+  }>,
   orders?: Array<{
     customerName?: string;
     createdByUserName?: string;
@@ -40,7 +49,9 @@ class Home extends Component<{}, IState> {
       this.state = {
         searchTerm: '',
         showFilters: false,
+        customerName: '',
         orderType: '',
+        originalOrders: [],
         orders: []
     }
   }
@@ -51,10 +62,16 @@ class Home extends Component<{}, IState> {
 
   fetchOrders = async () => {
     try {
-      const orders = await orderService.get();
+      let orders;
+      if (this.state.customerName || this.state.orderType) {
+        orders = await orderService.query(this.state.customerName, this.state.orderType);
+      } else {
+        orders = await orderService.get();
+      }
 
       let formattedOrders = this.formatOrders(orders, false);
-      this.setState({ orders: formattedOrders });
+      let originalOrders = await orderService.get();
+      this.setState({ orders: formattedOrders, originalOrders });
 
     } catch (error) {
       console.log(error);
@@ -72,14 +89,12 @@ class Home extends Component<{}, IState> {
 
   searchOrders = async (e: any) => {
       if (e && e.target && e.target.value && e.target.value.length) {
-
         const orders = this.state.orders?.filter(order => order.orderId === parseInt(e.target.value));
         this.setState({ orders })
       }
 
       if (!e.target.value.length) {
-        const orders = await orderService.get();
-        this.setState({ orders })
+        this.fetchOrders();
       }
   }
 
@@ -110,8 +125,9 @@ class Home extends Component<{}, IState> {
     }
   }
 
-  handleSelectOrderType = () => {
-    console.log('TODO')
+  handleSelectOrderType = (orderType: string) => {
+    this.setState({orderType});
+    this.fetchOrders();
   }
 
   handleCreateOrder = async (orderType: string, customerName: string) => {
@@ -126,8 +142,8 @@ class Home extends Component<{}, IState> {
   }
 
   customers = () => {
-    let customers = [...new Set(this.state.orders?.map(item => item.customerName))];
-   let menu = [];
+    let customers = [...new Set(this.state.originalOrders?.map(item => item.customerName))];
+    let menu = [];
     for (let index = 0; index < customers.length; index++) {
       const element = customers[index];
       menu.push(<MenuItem value={element}>{element}</MenuItem>)
@@ -135,8 +151,25 @@ class Home extends Component<{}, IState> {
     return menu;
   }
 
+  updateSelectedCustomer = (e: any) => {
+    this.setState({customerName: e.target.value})
+    this.fetchOrders();
+  }
+
   toggleFilters = () => {
     this.setState({showFilters: !this.state.showFilters});
+  }
+
+  filterCount = () => {
+    let count = 0;
+
+    if (this.state.customerName.length) {
+      count = count + 1;
+    }
+    if (this.state.orderType.length) {
+      count = count + 1;
+    }
+    return count;
   }
 
   render() {
@@ -174,6 +207,7 @@ class Home extends Component<{}, IState> {
                   <SearchIcon />
                 </IconButton>
               </Paper>
+              
               <ToggleButton
                 sx={{
                   ml: 1,
@@ -183,7 +217,10 @@ class Home extends Component<{}, IState> {
                 value="check"
                 onClick={this.toggleFilters}
               >
+                {this.filterCount() ? 
+                <div className="filter-badge">{this.filterCount()} </div> : 
                 <FilterListIcon sx={{mr: 1}}  />
+                }
                 Filters
               </ToggleButton>
 
@@ -197,11 +234,16 @@ class Home extends Component<{}, IState> {
                   <Select
                     labelId="demo-simple-select-label"
                     label="Customer name"
+                    onChange={this.updateSelectedCustomer}
                   >
+                    <MenuItem value="" >None</MenuItem>
                     {this.customers()}
                   </Select>
                 </FormControl>
-                <SelectOrderType selectOrderType={this.handleSelectOrderType}/>
+                { this.state.customerName.length ?
+                <SelectOrderType selectOrderType={this.handleSelectOrderType}/> : 
+                ''
+                }
               </div>
             </div>
             {this.state &&

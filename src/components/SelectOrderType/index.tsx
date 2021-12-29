@@ -1,6 +1,8 @@
 import { Component } from "react";
 import { orderTypes } from "../../utils/constants";
+import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
+import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 
 interface IProps {
@@ -16,16 +18,20 @@ class SelectOrderType extends Component<IProps, {}> {
 
     render() {
         return (
+          <FormControl sx={{ ml: 2 }} fullWidth>
+            <InputLabel id="demo-simple-select-label">Order type</InputLabel>
             <Select
-            sx={{ ml: 2, color: "#000", width: '100%', }}
+            sx={{ color: "#000", width: '100%', }}
             labelId="demo-simple-select-label"
-            label="Name"
+            label="Order type"
             onChange={this.upateOrderType}
-          >
-            {orderTypes.map(type => {
-              return (<MenuItem value={type.key}>{type.displayText}</MenuItem>)
-            })}
-          </Select>
+            >
+              {orderTypes.map(type => {
+                return (<MenuItem value={type.key}>{type.displayText}</MenuItem>)
+              })}
+            </Select>
+          </FormControl>
+
         )
     }
 }

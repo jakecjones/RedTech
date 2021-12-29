@@ -49,6 +49,7 @@
   &__actions {
     width: 50%;
     display: flex;
+    margin-left: 1em;
   }
 }
 
@@ -56,4 +57,16 @@
   margin: 1em 0;
   padding: 1em 0;
   max-height: 200px;
+}
+
+.filter-badge {
+  background-color: #1976d2;
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 5px;
 }

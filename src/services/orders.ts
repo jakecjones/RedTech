@@ -28,10 +28,10 @@ export default {
       return [];
     }
   },
-  query: async (customerName: string, query: string) => {
-    const orders = await api.http().get(`${PATH}/${customerName}${query}`);
-    if (orders && orders.data) {
-      return orders.data;
+  query: async (customerName: (string | undefined), orderType: string) => {
+    const order = await api.http().get(`${PATH}/${customerName}?orderType=${orderType}`);
+    if (order && order.data) {
+      return [order.data];
     } else {
       return [];
     }

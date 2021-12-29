@@ -1,12 +1,17 @@
 $break-small: 900px;
-
+body {
+  background-color: #fff;
+}
+.header {
+  background-color: #fff;
+}
 .headerLogo {
   height: 36px;
 }
 
 .headerFont {
-  font-size: 24px;
-  font-weight: 500;
+  font-size: 16px;
+  font-weight: 600;
 }
 .orders {
   &__list-actions {
@@ -17,13 +22,17 @@ $break-small: 900px;
   &__list-actions-active {
     display: flex;
     align-items: center;
-    background-color: #f7f7f7;
+    background-color: #eee;
     border-radius: 5px;
+    box-shadow: 1px 1px 3px rgb(193, 193, 193);
   }
 }
 .orders-headers {
   display: flex;
   flex-direction: row;
+  @media screen and (max-width: $break-small) {
+    flex-direction: column;
+  }
 }
 .orders-table {
   &__mobile {
@@ -31,6 +40,21 @@ $break-small: 900px;
   }
   &__desktop {
     display: block;
+  }
+  &__header {
+    font-weight: 600;
+  }
+  &__order-id {
+    font-weight: 600;
+    font-size: 14px;
+    background-color: #1976d2;
+    color: #fff;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
   @media screen and (max-width: $break-small) {
     &__desktop {
@@ -47,27 +71,30 @@ $break-small: 900px;
   height: 30vw;
   display: flex;
   align-items: center;
+  flex-direction: column;
   justify-content: center;
-  border: 1px solid #ccc;
   margin-top: 15px;
-  border-radius: 5px;
   &__graphic {
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 20vw;
-    height: 20vw;
+    flex-direction: column;
+    width: 15vw;
+    height: 15vw;
     min-width: 200px;
     min-height: 200px;
     border-radius: 50%;
     background: linear-gradient(#eee, #fff);
+    margin-bottom: 10px;
     svg {
       width: 90%;
       max-width: 150px;
     }
   }
 }
-
+.filter-chips {
+  margin: 20px 0 5px;
+}
 .filters {
   padding: 0;
   max-height: 0px;
@@ -100,4 +127,20 @@ $break-small: 900px;
   align-items: center;
   justify-content: center;
   margin-right: 5px;
+}
+
+.status {
+  background-color: #eee;
+  font-size: 12px;
+  text-transform: uppercase;
+  font-weight: 700;
+  padding: .8em 1.5em;
+  border-radius: 5px;
+  display: inline-block;
+
+  &__container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
 }

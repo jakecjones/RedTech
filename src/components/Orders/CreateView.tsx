@@ -6,7 +6,8 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import InputBase from "@mui/material/InputBase";
-import SelectOrderType from "../../components/SelectOrderType";
+import SelectOrderType from "./SelectOrderType";
+import AddIcon from '@mui/icons-material/Add';
 
 interface IProps {
   createOrder: any
@@ -53,7 +54,9 @@ class CreateView extends Component<IProps, IState> {
           disableElevation
           onClick={this.toggleCreateView}
         >
-          Create Order +
+          Create Order
+
+          <AddIcon sx={{ml: 2}} />
         </Button>
         <Dialog
           fullScreen={false}
@@ -77,8 +80,6 @@ class CreateView extends Component<IProps, IState> {
                   border: 1,
                   borderColor: "#ccc",
                   borderRadius: 1,
-                  mt: 3,
-                  mb: 1,
                 }}
                 onChange={this.updateCustomerName}
                 placeholder="Customer name"

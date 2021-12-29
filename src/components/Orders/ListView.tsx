@@ -24,6 +24,7 @@ interface IProps {
     orderId?: number;
     orderType?: string;
     isChecked?: boolean;
+    formattedOrderType?: string
   }>;
 }
 
@@ -64,12 +65,12 @@ class ListView extends Component<IProps, {}> {
             <div className="orders-table__desktop">
               <TableContainer
                 component={Paper}
-                sx={{ mt: 2, border: 1, borderColor: "#ccc" }}
+                sx={{ mt: 2 }}
                 elevation={0}
               >
                 <Table sx={{ minWidth: 650 }} aria-label="simple table">
-                  <TableHead>
-                    <TableRow>
+                  <TableHead sx={{borderRadius: 5}} >
+                    <TableRow sx={{backgroundColor: "#f9f9f9"}} >
                       <TableCell sx={{ width: 100 }}>
                         <div
                           className={`orders__list-actions ${
@@ -86,11 +87,31 @@ class ListView extends Component<IProps, {}> {
                           {this.showListActions()}
                         </div>
                       </TableCell>
-                      <TableCell>Order ID</TableCell>
-                      <TableCell>Creation Date</TableCell>
-                      <TableCell>Created By</TableCell>
-                      <TableCell>Order Type</TableCell>
-                      <TableCell>Customer</TableCell>
+                      <TableCell>
+                        <span className="orders-table__header">
+                          Order ID
+                        </span>
+                      </TableCell>
+                      <TableCell>
+                        <span className="orders-table__header">
+                        Creation Date
+                        </span>
+                      </TableCell>
+                      <TableCell>
+                        <span className="orders-table__header">
+                          Created By
+                        </span>
+                      </TableCell>
+                      <TableCell>
+                      <span className="orders-table__header">
+                        Order Type
+                        </span>
+                      </TableCell>
+                      <TableCell>
+                        <span className="orders-table__header">
+                          Customer
+                        </span>
+                      </TableCell>
                     </TableRow>
                   </TableHead>
 
@@ -111,10 +132,18 @@ class ListView extends Component<IProps, {}> {
                             checked={row.isChecked || false}
                           />
                         </TableCell>
-                        <TableCell>{row.orderId}</TableCell>
+                        <TableCell>
+                          <span className="orders-table__order-id">
+                            {row.orderId}
+                          </span>
+                        </TableCell>
                         <TableCell>{row.createdDate}</TableCell>
                         <TableCell>{row.createdByUserName}</TableCell>
-                        <TableCell>{row.orderType}</TableCell>
+                        <TableCell>
+                          <span className="status">
+                            {row.formattedOrderType}
+                          </span>
+                        </TableCell>
                         <TableCell>{row.customerName}</TableCell>
                       </TableRow>
                     ))}

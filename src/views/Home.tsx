@@ -1,29 +1,31 @@
 import { Component } from "react";
 
-import Page from "../../components/Page";
+import Page from "../components/Page";
 import Paper from "@mui/material/Paper";
 import InputBase from "@mui/material/InputBase";
 import Divider from "@mui/material/Divider";
 import IconButton from "@mui/material/IconButton";
 import SearchIcon from "@mui/icons-material/Search";
-import SelectOrderType from "../../components/SelectOrderType";
-import CreateView from "../../components/CreateView";
-import ListView from "../../components/ListView";
-import NoResults from "../../components/NoResults";
+import SelectOrderType from "../components/Orders/SelectOrderType";
+import CreateView from "../components/Orders/CreateView";
+import ListView from "../components/Orders/ListView";
+import NoResults from "../components/Orders/NoResults";
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import InputLabel from '@mui/material/InputLabel';
 import ToggleButton from '@mui/material/ToggleButton';
 import FilterListIcon from '@mui/icons-material/FilterList';
+import CloseIcon from '@mui/icons-material/Close';
 import MenuItem from '@mui/material/MenuItem';
-
-import orderService from "../../services/orders";
+import { orderTypes } from "../utils/constants";
+import orderService from "../services/orders";
 
 interface IState {
   searchTerm: string,
   customerName: string,
   orderType: string,
   showFilters: boolean,
+  filterChips: any,
   originalOrders?: Array<{
     customerName?: string;
     createdByUserName?: string;
@@ -49,6 +51,11 @@ class Home extends Component<{}, IState> {
       this.state = {
         searchTerm: '',
         showFilters: false,
+        filterChips: [
+          {
+            displayText: 'hey'
+          }
+        ],
         customerName: '',
         orderType: '',
         originalOrders: [],
@@ -82,7 +89,8 @@ class Home extends Component<{}, IState> {
     return orders.map((order: any) => {
       return {
         ...order,
-        isChecked: checkAll
+        isChecked: checkAll,
+        formattedOrderType: orderTypes.find(type => type.key === order.orderType)?.displayText
       }
     })
   }
@@ -181,19 +189,18 @@ class Home extends Component<{}, IState> {
               <Paper
                 component="form"
                 sx={{
-                  p: "2px 4px",
+                  p: "2px 10px",
                   display: "flex",
                   alignItems: "center",
-                  width: 300,
+                  width: "100%",
                   border: 1,
                   borderColor: "#ccc"
                 }}
                 elevation={0}
               >
                 <InputBase
-                  sx={{ ml: 1, flex: 1 }}
+                  sx={{ flex: 1 }}
                   placeholder="Search by Order ID"
-                  inputProps={{ "aria-label": "search google maps" }}
                   onChange={this.searchOrders}
                   defaultValue={this.state.searchTerm}
                 />
@@ -226,6 +233,19 @@ class Home extends Component<{}, IState> {
 
               <CreateView createOrder={this.handleCreateOrder}/>
 
+            </div>
+            <div className="filter-chips">
+              {this.state.filterChips.map((chip: any) => {
+                return (
+                <div className="filter-chips__chip status">
+                  <div className="status__container">
+                    {chip.displayText}
+                    <CloseIcon fontSize="small" sx={{ml: 1}} />
+                  </div>
+                </div>
+                )
+              })}
+                
             </div>
             <div className={`filters ${this.state.showFilters ? 'filters-active' : ''}`}>
               <div className="filters__actions">

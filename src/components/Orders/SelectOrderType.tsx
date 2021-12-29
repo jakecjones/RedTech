@@ -18,7 +18,7 @@ class SelectOrderType extends Component<IProps, {}> {
 
     render() {
         return (
-          <FormControl sx={{ ml: 2 }} fullWidth>
+          <FormControl fullWidth>
             <InputLabel id="demo-simple-select-label">Order type</InputLabel>
             <Select
             sx={{ color: "#000", width: '100%', }}

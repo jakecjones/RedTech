@@ -7,6 +7,19 @@
   font-size: 24px;
   font-weight: 500;
 }
+.orders {
+  &__list-actions {
+    display: flex;
+    align-items: center;
+    transition: all .05s ease-in-out;
+  }
+  &__list-actions-active {
+    display: flex;
+    align-items: center;
+    background-color: #f7f7f7;
+    border-radius: 5px;
+  }
+}
 .orders-headers {
   display: flex;
   flex-direction: row;

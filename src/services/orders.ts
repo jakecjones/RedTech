@@ -11,6 +11,15 @@ export default {
       return [];
     }
   },
+  delete: async (orderIds: Array<number>) => {
+    const response = await api.http().post(`${PATH}/delete`, orderIds);
+    console.log('response: ', response);
+    if (response && response.status === 200) {
+      return response;
+    } else {
+      return [];
+    }
+  },
   get: async () => {
     const orders = await api.http().get(PATH);
     if (orders && orders.data) {

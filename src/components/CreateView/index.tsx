@@ -7,7 +7,10 @@ import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import InputBase from "@mui/material/InputBase";
 import SelectOrderType from "../../components/SelectOrderType";
-import orderService from "../../services/orders";
+
+interface IProps {
+  createOrder: any
+}
 
 interface IState {
   customerName: string;
@@ -15,7 +18,7 @@ interface IState {
   orderType: string;
 }
 
-class CreateView extends Component<{}, IState> {
+class CreateView extends Component<IProps, IState> {
   constructor(props: any) {
     super(props);
     this.state = {
@@ -30,13 +33,8 @@ class CreateView extends Component<{}, IState> {
   };
 
   createOrder = async () => {
-    await orderService.create({
-      orderId: 0,
-      orderType: this.state.orderType,
-      customerName: this.state.customerName,
-      createdDate: "",
-      createdByUserName: "Jake Jones",
-    });
+
+    this.props.createOrder(this.state.orderType, this.state.customerName);
     this.toggleCreateView();
   };
   handleSelectOrderType = (orderType: string) => {
@@ -61,7 +59,7 @@ class CreateView extends Component<{}, IState> {
           fullScreen={false}
           open={this.state.isActive}
           aria-labelledby="responsive-dialog-title"
-          sx={{ p: 10 }}
+          sx={{ p: 10, width: '500px'}}
         >
           <DialogTitle id="responsive-dialog-title">
             {"Create new order"}
@@ -75,7 +73,7 @@ class CreateView extends Component<{}, IState> {
                   p: "10px",
                   display: "flex",
                   alignItems: "center",
-                  width: 200,
+                  width: '100%',
                   border: 1,
                   borderColor: "#ccc",
                   borderRadius: 1,

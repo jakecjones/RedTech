@@ -17,7 +17,7 @@ class SelectOrderType extends Component<IProps, {}> {
     render() {
         return (
             <Select
-            sx={{ color: "#000", width: 200 }}
+            sx={{ color: "#000", width: '100%', }}
             labelId="demo-simple-select-label"
             label="Name"
             onChange={this.upateOrderType}

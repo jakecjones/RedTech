@@ -43,6 +43,10 @@ class Home extends Component<{}, IState> {
   }
 
   async componentWillMount() {
+    this.fetchOrders();
+  }
+
+  fetchOrders = async () => {
     try {
       const orders = await orderService.get();
 
@@ -89,8 +93,33 @@ class Home extends Component<{}, IState> {
     }
   }
 
+  handleDeletedOrders = async () => {
+    let deletedOrders: any[] = [];
+    this.state.orders?.forEach((order) => {
+      if (order.isChecked) {
+          deletedOrders.push(order.orderId)
+      }
+    })
+
+    if (deletedOrders?.length) {
+      await orderService.delete(deletedOrders);
+      this.fetchOrders();
+    }
+  }
+
   handleSelectOrderType = () => {
     console.log('TODO')
+  }
+
+  handleCreateOrder = async (orderType: string, customerName: string) => {
+    await orderService.create({
+      orderId: 0,
+      orderType: orderType,
+      customerName: customerName,
+      createdDate: "",
+      createdByUserName: "Jake Jones",
+    });
+    this.fetchOrders();
   }
 
   toggleFilters = () => {
@@ -146,7 +175,7 @@ class Home extends Component<{}, IState> {
                 Filters
               </ToggleButton>
 
-              <CreateView/>
+              <CreateView createOrder={this.handleCreateOrder}/>
 
             </div>
             <div className={`filters ${this.state.showFilters ? 'filters-active' : ''}`}>
@@ -164,6 +193,7 @@ class Home extends Component<{}, IState> {
               <ListView
                 selectOrder={this.handleSelectOrder}
                 selectAllOrders={this.handleSelectOrders}
+                deleteSelectedOrders={this.handleDeletedOrders}
                 orders={this.state.orders}
               />
             ) : (

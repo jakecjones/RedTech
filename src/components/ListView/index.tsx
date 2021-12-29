@@ -8,9 +8,12 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Checkbox from "@mui/material/Checkbox";
 import Paper from "@mui/material/Paper";
+import IconButton from '@mui/material/IconButton';
 import IndeterminateCheckBoxIcon from '@mui/icons-material/IndeterminateCheckBox';
+import DeleteIcon from '@mui/icons-material/Delete';
 
 interface IProps {
+  deleteSelectedOrders?: any;
   selectAllOrders?: any;
   selectOrder?: any;
   orders?: Array<{
@@ -31,9 +34,27 @@ class ListView extends Component<IProps, {}> {
     this.props.selectAllOrders(e.target.checked)
   }
 
+  deleteSelected = (e: any) => {
+    this.props.deleteSelectedOrders(e.target.checked)
+  }
+
   selectOrder = (orderId: number, e: any) => {
     console.log(e, orderId)
   }
+
+  showListActions = () => {
+    const hasChecked =  this.props.orders?.some((order) => {
+      return order.isChecked;
+    })
+
+    if (hasChecked) {
+      return (
+        <IconButton onClick={this.deleteSelected} aria-label="delete">
+          <DeleteIcon sx={{color: '#777'}}/>
+        </IconButton>
+      )
+    }
+  }  
 
   render() {
     return (
@@ -43,8 +64,15 @@ class ListView extends Component<IProps, {}> {
         <Table sx={{ minWidth: 650 }} aria-label="simple table">
           <TableHead>
             <TableRow>
-              <TableCell>
-                <Checkbox checkedIcon={<IndeterminateCheckBoxIcon />} onChange={this.checkAll} defaultChecked={allChecked}/>
+              <TableCell sx={{width: 100}}>
+                <div className={`orders__list-actions ${this.showListActions() ? 'orders__list-actions-active' : ''}`}>
+                  <Checkbox
+                    checkedIcon={<IndeterminateCheckBoxIcon />}
+                    onChange={this.checkAll}
+                    defaultChecked={allChecked}
+                  />
+                  {this.showListActions()}
+                </div>
               </TableCell>
               <TableCell>Order ID</TableCell>
               <TableCell>Creation Date</TableCell>

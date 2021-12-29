@@ -10,9 +10,12 @@ import SelectOrderType from "../../components/SelectOrderType";
 import CreateView from "../../components/CreateView";
 import ListView from "../../components/ListView";
 import NoResults from "../../components/NoResults";
+import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
+import InputLabel from '@mui/material/InputLabel';
 import ToggleButton from '@mui/material/ToggleButton';
 import FilterListIcon from '@mui/icons-material/FilterList';
+import MenuItem from '@mui/material/MenuItem';
 
 import orderService from "../../services/orders";
 
@@ -122,6 +125,16 @@ class Home extends Component<{}, IState> {
     this.fetchOrders();
   }
 
+  customers = () => {
+    let customers = [...new Set(this.state.orders?.map(item => item.customerName))];
+   let menu = [];
+    for (let index = 0; index < customers.length; index++) {
+      const element = customers[index];
+      menu.push(<MenuItem value={element}>{element}</MenuItem>)
+    }
+    return menu;
+  }
+
   toggleFilters = () => {
     this.setState({showFilters: !this.state.showFilters});
   }
@@ -130,7 +143,6 @@ class Home extends Component<{}, IState> {
     return (
       <Page headerTitle={"Orders"}>
         <>
-        
           <div className="orders">
             <div className="orders-headers">
               <Paper
@@ -179,12 +191,18 @@ class Home extends Component<{}, IState> {
 
             </div>
             <div className={`filters ${this.state.showFilters ? 'filters-active' : ''}`}>
-            <Select
-                sx={{ mr: 1, ml: 1, color: "#000", width: 200 }}
-                labelId="demo-simple-select-label"
-                label="Name"
-              />
-              <SelectOrderType selectOrderType={this.handleSelectOrderType}/>
+              <div className="filters__actions">
+                <FormControl fullWidth>
+                  <InputLabel id="demo-simple-select-label">Customer name</InputLabel>
+                  <Select
+                    labelId="demo-simple-select-label"
+                    label="Customer name"
+                  >
+                    {this.customers()}
+                  </Select>
+                </FormControl>
+                <SelectOrderType selectOrderType={this.handleSelectOrderType}/>
+              </div>
             </div>
             {this.state &&
             this.state.orders &&

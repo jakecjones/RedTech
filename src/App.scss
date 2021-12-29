@@ -46,6 +46,10 @@
   border-radius: 10px;
   display: flex;
   align-items: center;
+  &__actions {
+    width: 50%;
+    display: flex;
+  }
 }
 
 .filters-active {

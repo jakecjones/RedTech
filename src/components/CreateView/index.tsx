@@ -59,15 +59,15 @@ class CreateView extends Component<IProps, IState> {
           fullScreen={false}
           open={this.state.isActive}
           aria-labelledby="responsive-dialog-title"
-          sx={{ p: 10, width: '500px'}}
+          sx={{ p: 10}}
+          onBackdropClick={this.toggleCreateView}
         >
           <DialogTitle id="responsive-dialog-title">
             {"Create new order"}
           </DialogTitle>
           <DialogContent>
             <DialogContentText>
-              Let Google help apps determine location. This means sending
-              anonymous location data to Google, even when no apps are running.
+            Track all orders here and easily identify shipments that are running behind.
               <InputBase
                 sx={{
                   p: "10px",

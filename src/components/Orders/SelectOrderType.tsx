@@ -44,7 +44,7 @@ class SelectOrderType extends Component<IProps, IState> {
             return (
               selected.map((select: string) => {
                 return (
-                  <span className="status-small">{select}</span>
+                  <span key={select} className="status-small">{select}</span>
                 )
               })
             )

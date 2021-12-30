@@ -53,7 +53,7 @@ class Home extends Component<{}, IState> {
   }
 
   async componentWillMount() {
-    this.fetchOrders();
+    await this.fetchOrders();
   }
 
   fetchOrders = async (searchTerm?: string) => {
@@ -252,7 +252,7 @@ class Home extends Component<{}, IState> {
             <div className="filter-chips">
               {this.state.filterChips.map((chip: any) => {
                 return (
-                  <div className="filter-chips__chip status">
+                  <div key={chip.value} className="filter-chips__chip status">
                     <div className="status__container">
                       {chip.displayText}
                       <CloseIcon fontSize="small" sx={{ ml: 1 }} />

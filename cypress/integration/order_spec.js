@@ -1,7 +1,6 @@
 const BASE_URL = 'http://localhost:3000'
 
 describe('Testing order steps', () => {
-\
     it('Can add new order', () => {
         cy.visit(BASE_URL)
 

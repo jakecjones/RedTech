@@ -61,10 +61,9 @@ class CreateView extends Component<IProps, IState> {
           <AddIcon sx={{ ml: 2 }} />
         </Button>
         <Dialog
-          fullScreen={false}
+          fullScreen={true}
           open={this.state.isActive}
           aria-labelledby="responsive-dialog-title"
-          sx={{ p: 10 }}
           onBackdropClick={this.toggleCreateView}
         >
           <DialogTitle id="responsive-dialog-title">

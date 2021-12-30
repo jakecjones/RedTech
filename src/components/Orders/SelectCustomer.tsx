@@ -39,10 +39,10 @@ class selectCustomerType extends Component<IProps, IState> {
   render() {
     return (
       <FormControl fullWidth>
-        <InputLabel id="demo-simple-select-label">Order type</InputLabel>
+        <InputLabel id="demo-simple-select-label">Customer name</InputLabel>
         <Select
-          sx={{ height: 50 }}
-          label="Order type"
+          sx={{ height: "100%" }}
+          label="Customer name"
           labelId="demo-multiple-checkbox-label"
           id="demo-multiple-checkbox"
           multiple

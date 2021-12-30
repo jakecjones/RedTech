@@ -33,7 +33,7 @@ class SelectOrderType extends Component<IProps, IState> {
       <FormControl fullWidth>
         <InputLabel id="demo-simple-select-label">Order type</InputLabel>
         <Select
-          sx={{height: 50}}
+          sx={{height: "100%"}}
           label="Order type"
           labelId="demo-multiple-checkbox-label"
           id="demo-multiple-checkbox"

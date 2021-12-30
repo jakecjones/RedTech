@@ -11,21 +11,13 @@ import Paper from "@mui/material/Paper";
 import IconButton from "@mui/material/IconButton";
 import IndeterminateCheckBoxIcon from "@mui/icons-material/IndeterminateCheckBox";
 import DeleteIcon from "@mui/icons-material/Delete";
-import Card from '@mui/material/Card';
+import Card from "../Card";
 
 interface IProps {
   deleteSelectedOrders?: any;
   selectAllOrders?: any;
   selectOrder?: any;
-  orders?: Array<{
-    customerName?: string;
-    createdByUserName?: string;
-    createdDate?: string;
-    orderId?: number;
-    orderType?: string;
-    isChecked?: boolean;
-    formattedOrderType?: string
-  }>;
+  orders?: any;
 }
 
 let allChecked = false;
@@ -40,7 +32,7 @@ class ListView extends Component<IProps, {}> {
   };
 
   showListActions = () => {
-    const hasChecked = this.props.orders?.some((order) => {
+    const hasChecked = this.props.orders?.some((order: any) => {
       return order.isChecked;
     });
 
@@ -112,7 +104,7 @@ class ListView extends Component<IProps, {}> {
                   </TableHead>
 
                   <TableBody>
-                    {this.props.orders.map((row) => (
+                    {this.props.orders.map((row: any) => (
                       <TableRow
                         key={row.orderId}
                         sx={{
@@ -148,10 +140,8 @@ class ListView extends Component<IProps, {}> {
               </TableContainer>
             </div>
             <div className="orders-table__mobile">
-            {this.props.orders.map((row) => (
-              <Card key={row.orderId} elevation={3} sx={{p: 5, my: 2}}>
-                {row.customerName}
-              </Card>
+            {this.props.orders.map((row: any) => (
+              <Card key={row.orderId} order={row} />
             ))}
             </div>
           </div>

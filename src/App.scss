@@ -104,6 +104,7 @@ body {
     }
     &__mobile {
       display: block;
+      padding-bottom: 100px;
     }
   }
 }
@@ -154,12 +155,31 @@ body {
   align-items: center;
   &__actions {
     width: 50%;
+    height: 60px;
     max-width: 600px;
     display: flex;
     &__action {
       width: 100%;
       max-width: 300px;
+      height: 60px;
       margin-right: 1em;
+
+    }
+  }
+  @media screen and (max-width: $break-small) {
+    &__actions {
+      width: 100%;
+      height: 60px;
+      max-width: unset;
+      display: flex;
+      flex-flow: wrap;
+      &__action {
+        width: 100%;
+        max-width: unset;
+        height: 60px;
+        margin-right: unset;
+        margin-bottom: 20px;
+      }
     }
   }
 }
@@ -167,6 +187,9 @@ body {
 .filters-active {
   padding: 10px 0;
   max-height: 200px;
+  @media screen and (max-width: $break-small) {
+    padding: 10px 0 100px 0;
+  }
 }
 
 .filter-badge {
@@ -213,5 +236,41 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
+  }
+}
+
+.card {
+  width: 100%;
+  margin: 0 auto 10px;
+  padding: 20px 0;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+
+  &__container {
+    width: 95%;
+    margin: 0 auto;
+  }
+  &__row {
+    display: flex;
+    align-items: center;
+    padding: 5px 0;
+  }
+  &__col {
+    display: flex;
+    flex-direction: column;
+    padding: 0 5px;
+    width: 100%;
+  }
+  &__label {
+    font-weight: 600;
+    margin-top: 15px;
+  }
+  .status-small {
+    width: 80px;
+  }
+  .status-container {
+    text-align: center;
+    align-items: flex-end;
   }
 }

@@ -1,7 +1,5 @@
 import Header from "../Header";
 
-import { layout } from "../../shared/layout";
-
 interface IProps {
     headerTitle: string;
     children: JSX.Element | JSX.Element[];
@@ -9,8 +7,8 @@ interface IProps {
 
 export default function Page(props: IProps) {
     const { headerTitle, children } = props;
-    return <div style={{ width: "100vw", height: "100vh", position: "relative" }}>
+    return <div>
         <Header label={headerTitle}/>
-        <div style={{ position: "relative", padding: layout.standardComponentPadding }}>{children}</div>
+        <div className="layout">{children}</div>
     </div>
 }

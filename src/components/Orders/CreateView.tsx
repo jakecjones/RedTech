@@ -52,10 +52,10 @@ class CreateView extends Component<IProps, IState> {
     return (
       <div>
         <Button
-          sx={{ ml: 1, width: 200, height: 56 }}
           variant="contained"
           disableElevation
           onClick={this.toggleCreateView}
+          className="action-button"
         >
           Create Order
           <AddIcon sx={{ ml: 2 }} />

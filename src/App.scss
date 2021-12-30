@@ -5,9 +5,38 @@ $primary-color-lighter: #DDEBF9;
 body {
   background-color: #fff;
 }
+.App {
+  width: 95%;
+  margin: 0 auto;
+}
 .header {
   background-color: #fff;
+  margin-bottom: 20px;
+
+  &__actions {
+    display: flex;
+    @media screen and (max-width: $break-small) {
+      display: none;
+    }
+  }
 }
+.action-button {
+  width: 200px;
+  height: 60px;
+  margin-left: 10px;
+  @media screen and (max-width: $break-small) {
+    width: 100%;
+  }
+}
+.filter-button {
+  width: 130px;
+  height: 60px;
+  margin-left: 10px;
+  @media screen and (max-width: $break-small) {
+    width: 100%;
+  }
+}
+
 .headerLogo {
   height: 36px;
 }
@@ -16,7 +45,9 @@ body {
   font-size: 16px;
   font-weight: 600;
 }
+
 .orders {
+  width: 100%;
   &__list-actions {
     display: flex;
     align-items: center;
@@ -29,14 +60,22 @@ body {
     border-radius: 5px;
     box-shadow: 1px 1px 3px rgb(193, 193, 193);
   }
-}
-.orders-headers {
-  display: flex;
-  flex-direction: row;
-  @media screen and (max-width: $break-small) {
-    flex-direction: column;
+  &__headers {
+    display: flex;
+    flex-direction: row;
+    @media screen and (max-width: $break-small) {
+      flex-direction: column;
+    }
+  }
+  &__action {
+    margin-right: 1em;
+    height: 60px;
+    @media screen and (max-width: $break-small) {
+      margin: 0 0 1em 0;
+    }
   }
 }
+
 .orders-table {
   &__mobile {
     display: none;

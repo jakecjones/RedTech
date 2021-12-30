@@ -223,54 +223,59 @@ class Home extends Component<{}, IState> {
       <Page headerTitle={"Orders"}>
         <>
           <div className="orders">
-            <div className="orders-headers">
-              <Paper
-                component="form"
-                sx={{
-                  p: "2px 10px",
-                  display: "flex",
-                  alignItems: "center",
-                  width: "100%",
-                  border: 1,
-                  borderColor: "#ccc",
-                }}
-                elevation={0}
-              >
-                <InputBase
-                  sx={{ flex: 1 }}
-                  placeholder="Search by Order ID"
-                  onChange={this.searchOrders}
-                  defaultValue={this.state.searchTerm}
-                />
-
-                <Divider sx={{ height: 28, m: 0.5 }} orientation="vertical" />
-                <IconButton
-                  type="submit"
-                  sx={{ p: "10px" }}
-                  aria-label="search"
+            <div className="orders__headers">
+              <div className="orders__action">
+                <Paper
+                  component="form"
+                  sx={{
+                    display: "flex",
+                    alignItems: "center",
+                    border: 1,
+                    borderColor: "#ccc",
+                    height: "60px",
+                    px: 2
+                  }}
+                  elevation={0}
                 >
-                  <SearchIcon />
-                </IconButton>
-              </Paper>
+                  <InputBase
+                    sx={{ flex: 1 }}
+                    placeholder="Search by Order ID"
+                    onChange={this.searchOrders}
+                    defaultValue={this.state.searchTerm}
+                  />
 
-              <ToggleButton
-                sx={{
-                  ml: 1,
-                  border: 1,
-                  borderColor: "#ccc",
-                }}
-                value="check"
-                onClick={this.toggleFilters}
-              >
-                {this.filterCount() ? (
-                  <div className="filter-badge">{this.filterCount()} </div>
-                ) : (
-                  <FilterListIcon sx={{ mr: 1 }} />
-                )}
-                Filters
-              </ToggleButton>
-
-              <CreateView createOrder={this.handleCreateOrder} />
+                  <Divider sx={{ height: 28, m: 0.5 }} orientation="vertical" />
+                  <IconButton
+                    type="submit"
+                    sx={{ p: "10px" }}
+                    aria-label="search"
+                  >
+                    <SearchIcon />
+                  </IconButton>
+                </Paper>
+              </div>
+              <div className="orders__action">
+                <ToggleButton
+                  sx={{
+                    height: "100%",
+                    border: 1,
+                    borderColor: "#ccc",
+                  }}
+                  value="check"
+                  onClick={this.toggleFilters}
+                  className="filter-button"
+                >
+                  {this.filterCount() ? (
+                    <div className="filter-badge">{this.filterCount()} </div>
+                  ) : (
+                    <FilterListIcon sx={{ mr: 1 }} />
+                  )}
+                  Filters
+                </ToggleButton>
+              </div>
+              <div className="orders__action">
+                <CreateView createOrder={this.handleCreateOrder} />
+              </div>
             </div>
             <div className="filter-chips">
               {this.state.filterChips.map((chip: any) => {
@@ -279,8 +284,9 @@ class Home extends Component<{}, IState> {
                     <div className="status__container">
                       {chip.displayText}
                       <IconButton
-                        sx={{ ml: 1 }}
+                        sx={{ ml: 1, p: 0 }}
                         onClick={() => this.removeFilter(chip)}
+                        size={"large"}
                       >
                         <CloseIcon fontSize="small"/>
                       </IconButton>

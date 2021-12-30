@@ -3,6 +3,7 @@ import { Component } from "react";
 import Page from "../components/Page";
 import Paper from "@mui/material/Paper";
 import InputBase from "@mui/material/InputBase";
+import Button from "@mui/material/Button";
 import Divider from "@mui/material/Divider";
 import IconButton from "@mui/material/IconButton";
 import SearchIcon from "@mui/icons-material/Search";
@@ -24,6 +25,7 @@ interface IState {
   searchTerm: string,
   customerName: string,
   orderType: string,
+  orderTypeFilters: any,
   showFilters: boolean,
   filterChips: any,
   originalOrders?: Array<{
@@ -52,17 +54,18 @@ class Home extends Component<{}, IState> {
         searchTerm: '',
         showFilters: false,
         filterChips: [
-          {
-            displayText: 'Transfer',
-            value: 'TransferOrder'
-          },
-          {
-            displayText: 'Walmart',
-            value: 'Walmart'
-          }
+          // {
+          //   displayText: 'Transfer',
+          //   value: 'TransferOrder'
+          // },
+          // {
+          //   displayText: 'Walmart',
+          //   value: 'Walmart'
+          // }
         ],
         customerName: '',
         orderType: '',
+        orderTypeFilters: [],
         originalOrders: [],
         orders: []
     }
@@ -154,9 +157,20 @@ class Home extends Component<{}, IState> {
     }
   }
 
-  handleSelectOrderType = (orderType: string) => {
-    this.setState({orderType});
+  handleSelectOrderType = (orderTypeFilters: any) => {
+    let filterChips = orderTypeFilters.map((item: any) => {
+      return {
+        value: item,
+        displayText: orderTypes.find(type => type.key === item)?.displayText
+      }
+    });
+
+    this.setState({orderTypeFilters, filterChips});
     this.fetchOrders();
+  }
+
+  handleEmpty = () => {
+    this.setState({orderTypeFilters: ['Standard']})
   }
 
   handleCreateOrder = async (orderType: string, customerName: string) => {
@@ -190,15 +204,7 @@ class Home extends Component<{}, IState> {
   }
 
   filterCount = () => {
-    let count = 0;
-
-    if (this.state.customerName.length) {
-      count = count + 1;
-    }
-    if (this.state.orderType.length) {
-      count = count + 1;
-    }
-    return count;
+    return this.state.filterChips.length;
   }
 
   render() {
@@ -253,20 +259,6 @@ class Home extends Component<{}, IState> {
               </ToggleButton>
 
               <CreateView createOrder={this.handleCreateOrder}/>
-
-            </div>
-            <div className="filter-chips">
-              {this.state.filterChips.map((chip: any) => {
-                return (
-                <div className="filter-chips__chip status">
-                  <div className="status__container">
-                    {chip.displayText}
-                    <CloseIcon fontSize="small" sx={{ml: 1}} />
-                  </div>
-                </div>
-                )
-              })}
-                
             </div>
             <div className={`filters ${this.state.showFilters ? 'filters-active' : ''}`}>
               <div className="filters__actions">
@@ -281,11 +273,24 @@ class Home extends Component<{}, IState> {
                     {this.customers()}
                   </Select>
                 </FormControl>
-                { this.state.customerName.length ?
-                <SelectOrderType selectOrderType={this.handleSelectOrderType}/> : 
-                ''
-                }
+                <SelectOrderType
+                  orderTypeFilters={this.state.orderTypeFilters}
+                  selectOrderType={this.handleSelectOrderType}
+                />
               </div>
+            </div>
+            <div className="filter-chips">
+              {this.state.filterChips.map((chip: any) => {
+                return (
+                <div className="filter-chips__chip status">
+                  <div className="status__container">
+                    {chip.displayText}
+                    <CloseIcon fontSize="small" sx={{ml: 1}} />
+                  </div>
+                </div>
+                )
+              })}
+                
             </div>
             {this.state &&
             this.state.orders &&

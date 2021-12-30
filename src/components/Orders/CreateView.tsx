@@ -85,7 +85,6 @@ class CreateView extends Component<IProps, IState> {
                 placeholder="Customer name"
                 inputProps={{ "aria-label": "Customer name" }}
               />
-              <SelectOrderType selectOrderType={this.handleSelectOrderType} />
             </DialogContentText>
           </DialogContent>
           <DialogActions>

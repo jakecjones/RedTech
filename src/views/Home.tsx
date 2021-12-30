@@ -173,7 +173,7 @@ class Home extends Component<{}, IState> {
       return {
         value: item,
         displayText,
-        type: filters.type
+        type: filters.type,
       };
     });
 
@@ -205,15 +205,21 @@ class Home extends Component<{}, IState> {
     let customerFilters = this.state.customerFilters;
     let orderTypeFilters = this.state.orderTypeFilters;
 
-    const filterChipIndex = filterChips.findIndex((item : any) => item.value === filter.value);
-    const customerNameIndex = customerFilters.findIndex((item : any) => item === filter.value);
-    const orderTypeIndex = orderTypeFilters.findIndex((item : any) => item === filter.value);
+    const filterChipIndex = filterChips.findIndex(
+      (item: any) => item.value === filter.value
+    );
+    const customerNameIndex = customerFilters.findIndex(
+      (item: any) => item === filter.value
+    );
+    const orderTypeIndex = orderTypeFilters.findIndex(
+      (item: any) => item === filter.value
+    );
 
     filterChips.splice(filterChipIndex, 1);
     customerFilters.splice(customerNameIndex, 1);
     orderTypeFilters.splice(orderTypeIndex, 1);
 
-    this.setState({ filterChips, customerFilters, orderTypeFilters })
+    this.setState({ filterChips, customerFilters, orderTypeFilters });
     this.fetchOrders();
   };
 
@@ -232,7 +238,7 @@ class Home extends Component<{}, IState> {
                     border: 1,
                     borderColor: "#ccc",
                     height: "60px",
-                    px: 2
+                    px: 2,
                   }}
                   elevation={0}
                 >
@@ -287,7 +293,7 @@ class Home extends Component<{}, IState> {
                         onClick={() => this.removeFilter(chip)}
                         size={"large"}
                       >
-                        <CloseIcon fontSize="small"/>
+                        <CloseIcon fontSize="small" />
                       </IconButton>
                     </div>
                   </div>
@@ -300,17 +306,17 @@ class Home extends Component<{}, IState> {
               }`}
             >
               <div className="filters__actions">
-                <div className="filters__actions__action">
-                  {this.state.originalOrders.length ? (
+                {this.state.originalOrders.length ? (
+                  <div className="filters__actions__action">
                     <SelectCustomer
                       originalOrders={this.state.originalOrders}
                       customerFilters={this.state.customerFilters}
                       selectCustomerType={this.handleFilters}
                     />
-                  ) : (
-                    ""
-                  )}
-                </div>
+                  </div>
+                ) : (
+                  ""
+                )}
                 <div className="filters__actions__action">
                   <SelectOrderType
                     orderTypeFilters={this.state.orderTypeFilters}

@@ -73,7 +73,7 @@ class CreateView extends Component<IProps, IState> {
             <DialogContentText>
               Track all orders here and easily identify shipments that are
               running behind.
-              <div className="mb-1">
+              <div className="mt-1 mb-1">
                 <InputBase
                   sx={{
                     p: "10px",

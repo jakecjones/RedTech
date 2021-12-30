@@ -68,5 +68,6 @@ describe('Testing order steps', () => {
         .click()
 
         cy.get('.no-results')
+        .should('be.visible')
     })
   })

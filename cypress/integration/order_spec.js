@@ -1,12 +1,13 @@
+const BASE_URL = 'http://localhost:3000'
 
 describe('Testing order steps', () => {
     it('Can add new order', () => {
-        cy.visit('http://localhost:3000')
+        cy.visit(BASE_URL)
 
         cy.get('.MuiButton-root')
         .click()
 
-        cy.get('.css-8gbtef-MuiInputBase-root > .MuiInputBase-input')
+        cy.get('.mb-1 > .MuiInputBase-root > .MuiInputBase-input')
         .type('automated-business-test')
 
         cy.get('.MuiDialogContentText-root > .MuiFormControl-root > .MuiOutlinedInput-root > .MuiSelect-select')
@@ -23,7 +24,7 @@ describe('Testing order steps', () => {
     })
 
     it('Can delete all orders', () => {
-        cy.visit('http://localhost:3000')
+        cy.visit(BASE_URL)
 
         cy.get('.orders__list-actions > .MuiCheckbox-root > .PrivateSwitchBase-input')
         .click()
@@ -36,12 +37,12 @@ describe('Testing order steps', () => {
     })
 
     it('Can add new order', () => {
-        cy.visit('http://localhost:3000')
+        cy.visit(BASE_URL)
 
         cy.get('.MuiButton-root')
         .click()
 
-        cy.get('.css-8gbtef-MuiInputBase-root > .MuiInputBase-input')
+        cy.get('.mb-1 > .MuiInputBase-root > .MuiInputBase-input')
         .type('automated-business-test')
 
         cy.get('.MuiDialogContentText-root > .MuiFormControl-root > .MuiOutlinedInput-root > .MuiSelect-select')
@@ -58,9 +59,9 @@ describe('Testing order steps', () => {
     })
 
     it('Can delete single order', () => {
-        cy.visit('http://localhost:3000')
+        cy.visit(BASE_URL)
 
-        cy.get('.MuiTableRow-root > :nth-child(1) > .MuiCheckbox-root > .PrivateSwitchBase-input')
+        cy.get('.MuiTableBody-root > :nth-child(1) > :nth-child(1) > .MuiCheckbox-root > .PrivateSwitchBase-input')
         .click()
 
         cy.get('[data-testid="DeleteIcon"]')

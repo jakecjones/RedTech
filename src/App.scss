@@ -108,8 +108,17 @@ body {
     }
   }
 }
+.mt-1 {
+  margin-top: 1em;
+}
+.mr-1 {
+  margin-right: 1em;
+}
 .mb-1 {
-  margin: 1em 0;
+  margin-bottom: 1em;
+}
+.ml-1 {
+  margin-left: 1em;
 }
 .no-results {
   width: 100%;
@@ -264,7 +273,6 @@ body {
   }
   &__label {
     font-weight: 600;
-    margin-top: 15px;
   }
   .status-small {
     width: 80px;

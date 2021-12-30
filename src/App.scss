@@ -93,7 +93,11 @@ body {
   }
 }
 .filter-chips {
-  margin: 20px 0 5px;
+  margin: 20px 0 0;
+
+  &__chip {
+    margin: 0 5px 5px 0;
+  }
 }
 .filters {
   padding: 0;

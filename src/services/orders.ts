@@ -31,6 +31,7 @@ const get = async () => {
 };
 
 const query = async (customerName: string | undefined, orderType: string) => {
+  // TODO update endpoint to return a list of orders vs a single order
   const order = await api
     .http()
     .get(`${PATH}/${customerName}?orderType=${orderType}`);

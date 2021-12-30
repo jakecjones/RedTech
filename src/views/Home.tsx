@@ -53,7 +53,12 @@ class Home extends Component<{}, IState> {
         showFilters: false,
         filterChips: [
           {
-            displayText: 'hey'
+            displayText: 'Transfer',
+            value: 'TransferOrder'
+          },
+          {
+            displayText: 'Walmart',
+            value: 'Walmart'
           }
         ],
         customerName: '',
@@ -70,14 +75,30 @@ class Home extends Component<{}, IState> {
   fetchOrders = async () => {
     try {
       let orders;
-      if (this.state.customerName || this.state.orderType) {
-        orders = await orderService.query(this.state.customerName, this.state.orderType);
-      } else {
-        orders = await orderService.get();
-      }
+      let filteredOrders = [];
+
+      orders = await orderService.get();
 
       let formattedOrders = this.formatOrders(orders, false);
       let originalOrders = await orderService.get();
+
+
+      if (this.state.filterChips && this.state.filterChips.length) {
+        for (let index = 0; index < formattedOrders.length; index++) {
+          const element = formattedOrders[index];
+
+          const isIncluded = this.state.filterChips.findIndex((chip: any) => {
+            return element.orderType === chip.value || element.customerName === chip.value;
+          })
+
+          if (isIncluded >= 0) {
+            filteredOrders.push(element);
+          }
+        }
+
+        formattedOrders = filteredOrders;
+      }
+
       this.setState({ orders: formattedOrders, originalOrders });
 
     } catch (error) {

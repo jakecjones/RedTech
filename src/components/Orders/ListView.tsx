@@ -39,10 +39,6 @@ class ListView extends Component<IProps, {}> {
     this.props.deleteSelectedOrders(e.target.checked);
   };
 
-  selectOrder = (orderId: number, e: any) => {
-    console.log(e, orderId);
-  };
-
   showListActions = () => {
     const hasChecked = this.props.orders?.some((order) => {
       return order.isChecked;

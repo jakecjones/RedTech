@@ -8,18 +8,18 @@ import Checkbox from "@mui/material/Checkbox";
 interface IProps {
   originalOrders: any;
   selectCustomerType: any;
-  orderCustomerFilters: any;
+  customerFilters: any;
 }
 
 interface IState {
-  orderCustomerFilters: any;
+  customerFilters: any;
 }
 
 class selectCustomerType extends Component<IProps, IState> {
   constructor(props: any) {
     super(props);
     this.state = {
-      orderCustomerFilters: [],
+      customerFilters: [],
     };
   }
 
@@ -32,7 +32,8 @@ class selectCustomerType extends Component<IProps, IState> {
   };
 
   upateCustomerType = (e: any) => {
-    this.props.selectCustomerType(e.target.value);
+    this.props.selectCustomerType({type: 'customerName', items: e.target.value});
+
   };
 
   render() {
@@ -45,10 +46,10 @@ class selectCustomerType extends Component<IProps, IState> {
           labelId="demo-multiple-checkbox-label"
           id="demo-multiple-checkbox"
           multiple
-          value={this.props.orderCustomerFilters}
+          value={this.props.customerFilters}
           renderValue={(selected) => {
             return selected.map((select: string) => {
-              return <span className="status-small">{select}</span>;
+              return <span key={select} className="status-small">{select}</span>;
             });
           }}
           onChange={this.upateCustomerType}
@@ -56,7 +57,7 @@ class selectCustomerType extends Component<IProps, IState> {
           {this.customers().map((item: any) => {
             return (
                 <MenuItem key={item} value={item}>
-                    <Checkbox checked={this.props.orderCustomerFilters.indexOf(item) > -1} />
+                    <Checkbox checked={this.props.customerFilters.indexOf(item) > -1} />
                     {item}
                 </MenuItem>
             );

@@ -25,9 +25,8 @@ class SelectOrderType extends Component<IProps, IState> {
   };
 
   upateOrderType = (e: any) => {
-    this.props.selectOrderType(e.target.value);
+    this.props.selectOrderType({type: 'orderType', items: e.target.value});
   };
-
 
   render() {
     return (

@@ -16,13 +16,14 @@ import FilterListIcon from "@mui/icons-material/FilterList";
 import CloseIcon from "@mui/icons-material/Close";
 import { orderTypes } from "../utils/constants";
 import orderService from "../services/orders";
+import { filter } from "lodash";
 
 interface IState {
   searchTerm: string;
   customerName: string;
   orderType: string;
   orderTypeFilters: any;
-  orderCustomerFilters: any;
+  customerFilters: any;
   showFilters: boolean;
   filterChips: any;
   originalOrders?: any;
@@ -46,7 +47,7 @@ class Home extends Component<{}, IState> {
       customerName: "",
       orderType: "",
       orderTypeFilters: [],
-      orderCustomerFilters: [],
+      customerFilters: [],
       originalOrders: [],
       orders: [],
     };
@@ -71,7 +72,6 @@ class Home extends Component<{}, IState> {
           (order: any) => order.orderId === parseInt(searchTerm)
         );
       }
-
 
       if (this.state.filterChips && this.state.filterChips.length) {
         for (let index = 0; index < formattedOrders.length; index++) {
@@ -111,13 +111,13 @@ class Home extends Component<{}, IState> {
   };
 
   searchOrders = async (e: any) => {
-    let searchTerm = '';
+    let searchTerm = "";
 
     if (e && e.target && e.target.value && e.target.value.length) {
       searchTerm = e.target.value;
     }
 
-    this.fetchOrders(searchTerm)
+    this.fetchOrders(searchTerm);
   };
 
   handleSelectOrders = (checkAll: boolean) => {
@@ -149,21 +149,37 @@ class Home extends Component<{}, IState> {
     }
   };
 
-  handleSelectOrderType = (orderTypeFilters: any) => {
-    let filterChips = orderTypeFilters.map((item: any) => {
+  handleFilters = (filters?: any) => {
+    let mergedFilters: any[] = [];
+    let orderTypeFilters = [];
+    let customerFilters = [];
+
+    if (filters.type === "customerName") {
+      mergedFilters = [...filters.items, ...this.state.orderTypeFilters];
+      customerFilters = filters.items;
+      orderTypeFilters = this.state.orderTypeFilters;
+    }
+    if (filters.type === "orderType") {
+      mergedFilters = [...this.state.customerFilters, ...filters.items];
+      orderTypeFilters = filters.items;
+      customerFilters = this.state.customerFilters;
+    }
+
+    const filterChips = mergedFilters.map((item: any) => {
+      const displayText = orderTypes.find((type) => type.key === item)
+        ?.displayText
+        ? orderTypes.find((type) => type.key === item)?.displayText
+        : item;
+
       return {
         value: item,
-        displayText: orderTypes.find((type) => type.key === item)?.displayText,
+        displayText,
       };
     });
 
-    this.setState({ orderTypeFilters, filterChips });
+    this.setState({ orderTypeFilters, customerFilters, filterChips });
     this.fetchOrders();
   };
-
-  handleSelectCustomerType = (customerFilters: any) => {
-    console.log(customerFilters);
-  }
 
   handleEmpty = () => {
     this.setState({ orderTypeFilters: ["Standard"] });
@@ -179,8 +195,6 @@ class Home extends Component<{}, IState> {
     });
     this.fetchOrders();
   };
-
-
 
   updateSelectedCustomer = (e: any) => {
     this.setState({ customerName: e.target.value });
@@ -268,18 +282,20 @@ class Home extends Component<{}, IState> {
             >
               <div className="filters__actions">
                 <div className="filters__actions__action">
-                  {this.state.originalOrders.length ? 
-                <SelectCustomer
-                    originalOrders={this.state.originalOrders}
-                    orderCustomerFilters={this.state.orderCustomerFilters}
-                    selectCustomerType={this.handleSelectCustomerType}
-                />
-                : ''}
+                  {this.state.originalOrders.length ? (
+                    <SelectCustomer
+                      originalOrders={this.state.originalOrders}
+                      customerFilters={this.state.customerFilters}
+                      selectCustomerType={this.handleFilters}
+                    />
+                  ) : (
+                    ""
+                  )}
                 </div>
                 <div className="filters__actions__action">
                   <SelectOrderType
                     orderTypeFilters={this.state.orderTypeFilters}
-                    selectOrderType={this.handleSelectOrderType}
+                    selectOrderType={this.handleFilters}
                   />
                 </div>
               </div>

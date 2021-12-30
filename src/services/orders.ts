@@ -3,7 +3,6 @@ const PATH = "Orders";
 
 const create = async (body: any) => {
   const response = await api.http().post(PATH, body);
-  console.log("response: ", response);
   if (response && response.data) {
     return response.data;
   } else {
@@ -13,7 +12,6 @@ const create = async (body: any) => {
 
 const deleteSelected = async (orderIds: Array<number>) => {
   const response = await api.http().post(`${PATH}/delete`, orderIds);
-  console.log("response: ", response);
   if (response && response.status === 200) {
     return response;
   } else {

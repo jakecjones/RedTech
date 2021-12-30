@@ -153,7 +153,7 @@ class ListView extends Component<IProps, {}> {
             </div>
             <div className="orders-table__mobile">
             {this.props.orders.map((row) => (
-              <Card elevation={3} sx={{p: 5, my: 2}}>
+              <Card key={row.orderId} elevation={3} sx={{p: 5, my: 2}}>
                 {row.customerName}
               </Card>
             ))}

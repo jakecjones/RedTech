@@ -5,12 +5,16 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
+import FormControl from "@mui/material/FormControl";
+import Select from "@mui/material/Select";
+import InputLabel from "@mui/material/InputLabel";
+import MenuItem from "@mui/material/MenuItem";
 import InputBase from "@mui/material/InputBase";
-import SelectOrderType from "./SelectOrderType";
-import AddIcon from '@mui/icons-material/Add';
+import AddIcon from "@mui/icons-material/Add";
+import { orderTypes } from "../../utils/constants";
 
 interface IProps {
-  createOrder: any
+  createOrder: any;
 }
 
 interface IState {
@@ -34,12 +38,11 @@ class CreateView extends Component<IProps, IState> {
   };
 
   createOrder = async () => {
-
     this.props.createOrder(this.state.orderType, this.state.customerName);
     this.toggleCreateView();
   };
-  handleSelectOrderType = (orderType: string) => {
-    this.setState({ orderType });
+  handleSelectOrderType = (e: any) => {
+    this.setState({ orderType: e.target.value });
   };
   updateCustomerName = (e: any) => {
     this.setState({ customerName: e.target.value });
@@ -55,14 +58,13 @@ class CreateView extends Component<IProps, IState> {
           onClick={this.toggleCreateView}
         >
           Create Order
-
-          <AddIcon sx={{ml: 2}} />
+          <AddIcon sx={{ ml: 2 }} />
         </Button>
         <Dialog
           fullScreen={false}
           open={this.state.isActive}
           aria-labelledby="responsive-dialog-title"
-          sx={{ p: 10}}
+          sx={{ p: 10 }}
           onBackdropClick={this.toggleCreateView}
         >
           <DialogTitle id="responsive-dialog-title">
@@ -70,21 +72,42 @@ class CreateView extends Component<IProps, IState> {
           </DialogTitle>
           <DialogContent>
             <DialogContentText>
-            Track all orders here and easily identify shipments that are running behind.
-              <InputBase
-                sx={{
-                  p: "10px",
-                  display: "flex",
-                  alignItems: "center",
-                  width: '100%',
-                  border: 1,
-                  borderColor: "#ccc",
-                  borderRadius: 1,
-                }}
-                onChange={this.updateCustomerName}
-                placeholder="Customer name"
-                inputProps={{ "aria-label": "Customer name" }}
-              />
+              Track all orders here and easily identify shipments that are
+              running behind.
+              <div className="mb-1">
+                <InputBase
+                  sx={{
+                    p: "10px",
+                    display: "flex",
+                    alignItems: "center",
+                    width: "100%",
+                    border: 1,
+                    borderColor: "#ccc",
+                    borderRadius: 1,
+                  }}
+                  onChange={this.updateCustomerName}
+                  placeholder="Customer name"
+                  inputProps={{ "aria-label": "Customer name" }}
+                />
+              </div>
+              <FormControl fullWidth>
+                <InputLabel id="demo-simple-select-label">
+                  Order type
+                </InputLabel>
+                <Select
+                  labelId="demo-simple-select-label"
+                  label="Order type"
+                  onChange={this.handleSelectOrderType}
+                >
+                  {orderTypes.map((type) => {
+                    return (
+                      <MenuItem key={type.key} value={type.key}>
+                        {type.displayText}
+                      </MenuItem>
+                    );
+                  })}
+                </Select>
+              </FormControl>
             </DialogContentText>
           </DialogContent>
           <DialogActions>

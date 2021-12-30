@@ -34,12 +34,21 @@ class SelectOrderType extends Component<IProps, IState> {
       <FormControl fullWidth>
         <InputLabel id="demo-simple-select-label">Order type</InputLabel>
         <Select
+          sx={{height: 50}}
           label="Order type"
           labelId="demo-multiple-checkbox-label"
           id="demo-multiple-checkbox"
           multiple
           value={this.props.orderTypeFilters}
-          renderValue={(selected) => selected.join(', ')}
+          renderValue={(selected) => {
+            return (
+              selected.map((select: string) => {
+                return (
+                  <span className="status-small">{select}</span>
+                )
+              })
+            )
+          }}
           onChange={this.upateOrderType}
         >
           {orderTypes.map((type) => {

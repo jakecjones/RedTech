@@ -3,39 +3,29 @@ import { Component } from "react";
 import Page from "../components/Page";
 import Paper from "@mui/material/Paper";
 import InputBase from "@mui/material/InputBase";
-import Button from "@mui/material/Button";
 import Divider from "@mui/material/Divider";
 import IconButton from "@mui/material/IconButton";
 import SearchIcon from "@mui/icons-material/Search";
 import SelectOrderType from "../components/Orders/SelectOrderType";
+import SelectCustomer from "../components/Orders/SelectCustomer";
 import CreateView from "../components/Orders/CreateView";
 import ListView from "../components/Orders/ListView";
 import NoResults from "../components/Orders/NoResults";
-import FormControl from '@mui/material/FormControl';
-import Select from '@mui/material/Select';
-import InputLabel from '@mui/material/InputLabel';
-import ToggleButton from '@mui/material/ToggleButton';
-import FilterListIcon from '@mui/icons-material/FilterList';
-import CloseIcon from '@mui/icons-material/Close';
-import MenuItem from '@mui/material/MenuItem';
+import ToggleButton from "@mui/material/ToggleButton";
+import FilterListIcon from "@mui/icons-material/FilterList";
+import CloseIcon from "@mui/icons-material/Close";
 import { orderTypes } from "../utils/constants";
 import orderService from "../services/orders";
 
 interface IState {
-  searchTerm: string,
-  customerName: string,
-  orderType: string,
-  orderTypeFilters: any,
-  showFilters: boolean,
-  filterChips: any,
-  originalOrders?: Array<{
-    customerName?: string;
-    createdByUserName?: string;
-    createdDate?: string;
-    orderId?: number;
-    orderType?: string;
-    isChecked?: boolean;
-  }>,
+  searchTerm: string;
+  customerName: string;
+  orderType: string;
+  orderTypeFilters: any;
+  orderCustomerFilters: any;
+  showFilters: boolean;
+  filterChips: any;
+  originalOrders?: any;
   orders?: Array<{
     customerName?: string;
     createdByUserName?: string;
@@ -47,35 +37,26 @@ interface IState {
 }
 
 class Home extends Component<{}, IState> {
-
-    constructor(props: any) {
-      super(props);
-      this.state = {
-        searchTerm: '',
-        showFilters: false,
-        filterChips: [
-          // {
-          //   displayText: 'Transfer',
-          //   value: 'TransferOrder'
-          // },
-          // {
-          //   displayText: 'Walmart',
-          //   value: 'Walmart'
-          // }
-        ],
-        customerName: '',
-        orderType: '',
-        orderTypeFilters: [],
-        originalOrders: [],
-        orders: []
-    }
+  constructor(props: any) {
+    super(props);
+    this.state = {
+      searchTerm: "",
+      showFilters: false,
+      filterChips: [],
+      customerName: "",
+      orderType: "",
+      orderTypeFilters: [],
+      orderCustomerFilters: [],
+      originalOrders: [],
+      orders: [],
+    };
   }
 
   async componentWillMount() {
     this.fetchOrders();
   }
 
-  fetchOrders = async () => {
+  fetchOrders = async (searchTerm?: string) => {
     try {
       let orders;
       let filteredOrders = [];
@@ -85,14 +66,23 @@ class Home extends Component<{}, IState> {
       let formattedOrders = this.formatOrders(orders, false);
       let originalOrders = await orderService.get();
 
+      if (searchTerm && searchTerm.length) {
+        formattedOrders = formattedOrders?.filter(
+          (order: any) => order.orderId === parseInt(searchTerm)
+        );
+      }
+
 
       if (this.state.filterChips && this.state.filterChips.length) {
         for (let index = 0; index < formattedOrders.length; index++) {
           const element = formattedOrders[index];
 
           const isIncluded = this.state.filterChips.findIndex((chip: any) => {
-            return element.orderType === chip.value || element.customerName === chip.value;
-          })
+            return (
+              element.orderType === chip.value ||
+              element.customerName === chip.value
+            );
+          });
 
           if (isIncluded >= 0) {
             filteredOrders.push(element);
@@ -103,75 +93,81 @@ class Home extends Component<{}, IState> {
       }
 
       this.setState({ orders: formattedOrders, originalOrders });
-
     } catch (error) {
       console.log(error);
     }
-  }
+  };
 
   formatOrders = (orders: any, checkAll: boolean) => {
     return orders.map((order: any) => {
       return {
         ...order,
         isChecked: checkAll,
-        formattedOrderType: orderTypes.find(type => type.key === order.orderType)?.displayText
-      }
-    })
-  }
+        formattedOrderType: orderTypes.find(
+          (type) => type.key === order.orderType
+        )?.displayText,
+      };
+    });
+  };
 
   searchOrders = async (e: any) => {
-      if (e && e.target && e.target.value && e.target.value.length) {
-        const orders = this.state.orders?.filter(order => order.orderId === parseInt(e.target.value));
-        this.setState({ orders })
-      }
+    let searchTerm = '';
 
-      if (!e.target.value.length) {
-        this.fetchOrders();
-      }
-  }
+    if (e && e.target && e.target.value && e.target.value.length) {
+      searchTerm = e.target.value;
+    }
+
+    this.fetchOrders(searchTerm)
+  };
 
   handleSelectOrders = (checkAll: boolean) => {
-      const formattedOrders = this.formatOrders(this.state.orders, checkAll);
-      this.setState({ orders: formattedOrders });
-  }
+    const formattedOrders = this.formatOrders(this.state.orders, checkAll);
+    this.setState({ orders: formattedOrders });
+  };
   handleSelectOrder = (orderId: any, e: any) => {
     let orders = this.state.orders;
-    const orderIndex = this.state.orders?.findIndex(order => orderId === order.orderId);
-    if (orders && orders.length && orderIndex !== undefined ) {
+    const orderIndex = this.state.orders?.findIndex(
+      (order) => orderId === order.orderId
+    );
+    if (orders && orders.length && orderIndex !== undefined) {
       orders[orderIndex].isChecked = e.target.checked;
-      this.setState({ orders })
+      this.setState({ orders });
     }
-  }
+  };
 
   handleDeletedOrders = async () => {
     let deletedOrders: any[] = [];
     this.state.orders?.forEach((order) => {
       if (order.isChecked) {
-          deletedOrders.push(order.orderId)
+        deletedOrders.push(order.orderId);
       }
-    })
+    });
 
     if (deletedOrders?.length) {
       await orderService.deleteSelected(deletedOrders);
       this.fetchOrders();
     }
-  }
+  };
 
   handleSelectOrderType = (orderTypeFilters: any) => {
     let filterChips = orderTypeFilters.map((item: any) => {
       return {
         value: item,
-        displayText: orderTypes.find(type => type.key === item)?.displayText
-      }
+        displayText: orderTypes.find((type) => type.key === item)?.displayText,
+      };
     });
 
-    this.setState({orderTypeFilters, filterChips});
+    this.setState({ orderTypeFilters, filterChips });
     this.fetchOrders();
+  };
+
+  handleSelectCustomerType = (customerFilters: any) => {
+    console.log(customerFilters);
   }
 
   handleEmpty = () => {
-    this.setState({orderTypeFilters: ['Standard']})
-  }
+    this.setState({ orderTypeFilters: ["Standard"] });
+  };
 
   handleCreateOrder = async (orderType: string, customerName: string) => {
     await orderService.create({
@@ -182,30 +178,22 @@ class Home extends Component<{}, IState> {
       createdByUserName: "Jake Jones",
     });
     this.fetchOrders();
-  }
+  };
 
-  customers = () => {
-    let customers = [...new Set(this.state.originalOrders?.map(item => item.customerName))];
-    let menu = [];
-    for (let index = 0; index < customers.length; index++) {
-      const element = customers[index];
-      menu.push(<MenuItem value={element}>{element}</MenuItem>)
-    }
-    return menu;
-  }
+
 
   updateSelectedCustomer = (e: any) => {
-    this.setState({customerName: e.target.value})
+    this.setState({ customerName: e.target.value });
     this.fetchOrders();
-  }
+  };
 
   toggleFilters = () => {
-    this.setState({showFilters: !this.state.showFilters});
-  }
+    this.setState({ showFilters: !this.state.showFilters });
+  };
 
   filterCount = () => {
     return this.state.filterChips.length;
-  }
+  };
 
   render() {
     return (
@@ -221,7 +209,7 @@ class Home extends Component<{}, IState> {
                   alignItems: "center",
                   width: "100%",
                   border: 1,
-                  borderColor: "#ccc"
+                  borderColor: "#ccc",
                 }}
                 elevation={0}
               >
@@ -241,7 +229,7 @@ class Home extends Component<{}, IState> {
                   <SearchIcon />
                 </IconButton>
               </Paper>
-              
+
               <ToggleButton
                 sx={{
                   ml: 1,
@@ -251,51 +239,52 @@ class Home extends Component<{}, IState> {
                 value="check"
                 onClick={this.toggleFilters}
               >
-                {this.filterCount() ? 
-                <div className="filter-badge">{this.filterCount()} </div> : 
-                <FilterListIcon sx={{mr: 1}}  />
-                }
+                {this.filterCount() ? (
+                  <div className="filter-badge">{this.filterCount()} </div>
+                ) : (
+                  <FilterListIcon sx={{ mr: 1 }} />
+                )}
                 Filters
               </ToggleButton>
 
-              <CreateView createOrder={this.handleCreateOrder}/>
-            </div>
-            <div className={`filters ${this.state.showFilters ? 'filters-active' : ''}`}>
-              <div className="filters__actions">
-                <FormControl fullWidth>
-                  <InputLabel id="demo-simple-select-label">Customer name</InputLabel>
-                  <Select
-                    labelId="demo-simple-select-label"
-                    label="Customer name"
-                    onChange={this.updateSelectedCustomer}
-                  >
-                    <MenuItem value="" >None</MenuItem>
-                    {this.customers()}
-                  </Select>
-                </FormControl>
-                <SelectOrderType
-                  orderTypeFilters={this.state.orderTypeFilters}
-                  selectOrderType={this.handleSelectOrderType}
-                />
-              </div>
+              <CreateView createOrder={this.handleCreateOrder} />
             </div>
             <div className="filter-chips">
               {this.state.filterChips.map((chip: any) => {
                 return (
-                <div className="filter-chips__chip status">
-                  <div className="status__container">
-                    {chip.displayText}
-                    <CloseIcon fontSize="small" sx={{ml: 1}} />
+                  <div className="filter-chips__chip status">
+                    <div className="status__container">
+                      {chip.displayText}
+                      <CloseIcon fontSize="small" sx={{ ml: 1 }} />
+                    </div>
                   </div>
-                </div>
-                )
+                );
               })}
-                
             </div>
-            {this.state &&
-            this.state.orders &&
-            this.state.orders.length 
-            ? (
+            <div
+              className={`filters ${
+                this.state.showFilters ? "filters-active" : ""
+              }`}
+            >
+              <div className="filters__actions">
+                <div className="filters__actions__action">
+                  {this.state.originalOrders.length ? 
+                <SelectCustomer
+                    originalOrders={this.state.originalOrders}
+                    orderCustomerFilters={this.state.orderCustomerFilters}
+                    selectCustomerType={this.handleSelectCustomerType}
+                />
+                : ''}
+                </div>
+                <div className="filters__actions__action">
+                  <SelectOrderType
+                    orderTypeFilters={this.state.orderTypeFilters}
+                    selectOrderType={this.handleSelectOrderType}
+                  />
+                </div>
+              </div>
+            </div>
+            {this.state && this.state.orders && this.state.orders.length ? (
               <ListView
                 selectOrder={this.handleSelectOrder}
                 selectAllOrders={this.handleSelectOrders}

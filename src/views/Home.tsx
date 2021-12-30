@@ -206,9 +206,9 @@ class Home extends Component<{}, IState> {
     let customerFilters = this.state.customerFilters;
     let orderTypeFilters = this.state.orderTypeFilters;
 
-    const filterChipIndex = filterChips.findIndex((item : any) => item.value == filter.value);
-    const customerNameIndex = customerFilters.findIndex((item : any) => item == filter.value);
-    const orderTypeIndex = orderTypeFilters.findIndex((item : any) => item == filter.value);
+    const filterChipIndex = filterChips.findIndex((item : any) => item.value === filter.value);
+    const customerNameIndex = customerFilters.findIndex((item : any) => item === filter.value);
+    const orderTypeIndex = orderTypeFilters.findIndex((item : any) => item === filter.value);
 
     filterChips.splice(filterChipIndex, 1);
     customerFilters.splice(customerNameIndex, 1);

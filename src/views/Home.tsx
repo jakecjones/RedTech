@@ -174,15 +174,12 @@ class Home extends Component<{}, IState> {
       return {
         value: item,
         displayText,
+        type: filters.type
       };
     });
 
     this.setState({ orderTypeFilters, customerFilters, filterChips });
     this.fetchOrders();
-  };
-
-  handleEmpty = () => {
-    this.setState({ orderTypeFilters: ["Standard"] });
   };
 
   handleCreateOrder = async (orderType: string, customerName: string) => {
@@ -196,17 +193,29 @@ class Home extends Component<{}, IState> {
     this.fetchOrders();
   };
 
-  updateSelectedCustomer = (e: any) => {
-    this.setState({ customerName: e.target.value });
-    this.fetchOrders();
-  };
-
   toggleFilters = () => {
     this.setState({ showFilters: !this.state.showFilters });
   };
 
   filterCount = () => {
     return this.state.filterChips.length;
+  };
+
+  removeFilter = (filter: any) => {
+    let filterChips = this.state.filterChips;
+    let customerFilters = this.state.customerFilters;
+    let orderTypeFilters = this.state.orderTypeFilters;
+
+    const filterChipIndex = filterChips.findIndex((item : any) => item.value == filter.value);
+    const customerNameIndex = customerFilters.findIndex((item : any) => item == filter.value);
+    const orderTypeIndex = orderTypeFilters.findIndex((item : any) => item == filter.value);
+
+    filterChips.splice(filterChipIndex, 1);
+    customerFilters.splice(customerNameIndex, 1);
+    orderTypeFilters.splice(orderTypeIndex, 1);
+
+    this.setState({ filterChips, customerFilters, orderTypeFilters })
+    this.fetchOrders();
   };
 
   render() {
@@ -269,7 +278,12 @@ class Home extends Component<{}, IState> {
                   <div key={chip.value} className="filter-chips__chip status">
                     <div className="status__container">
                       {chip.displayText}
-                      <CloseIcon fontSize="small" sx={{ ml: 1 }} />
+                      <IconButton
+                        sx={{ ml: 1 }}
+                        onClick={() => this.removeFilter(chip)}
+                      >
+                        <CloseIcon fontSize="small"/>
+                      </IconButton>
                     </div>
                   </div>
                 );

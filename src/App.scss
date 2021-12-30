@@ -1,4 +1,7 @@
 $break-small: 900px;
+$primary-color: #1976d2;
+$primary-color-lighter: #DDEBF9;
+
 body {
   background-color: #fff;
 }
@@ -47,7 +50,7 @@ body {
   &__order-id {
     font-weight: 600;
     font-size: 14px;
-    background-color: #1976d2;
+    background-color: $primary-color;
     color: #fff;
     width: 30px;
     height: 30px;
@@ -112,11 +115,11 @@ body {
   align-items: center;
   &__actions {
     width: 50%;
-    max-width: 500px;
+    max-width: 600px;
     display: flex;
     &__action {
       width: 100%;
-      max-width: 250px;
+      max-width: 300px;
       margin-right: 1em;
     }
   }
@@ -128,7 +131,7 @@ body {
 }
 
 .filter-badge {
-  background-color: #1976d2;
+  background-color: $primary-color;
   border-radius: 50%;
   width: 20px;
   height: 20px;
@@ -140,8 +143,8 @@ body {
 }
 
 .status {
-  background-color: #DDEBF9;
-  color: #1976D3;
+  background-color: $primary-color-lighter;
+  color: $primary-color;
   font-size: 12px;
   text-transform: uppercase;
   font-weight: 700;
@@ -157,8 +160,8 @@ body {
 }
 
 .status-small {
-  background-color: #DDEBF9;
-  color: #1976D3;
+  background-color: $primary-color-lighter;
+  color: $primary-color;
   font-size: 10px;
   margin: 0 2px 0 0;
   text-transform: uppercase;
